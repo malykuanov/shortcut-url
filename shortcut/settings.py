@@ -9,6 +9,7 @@ env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('SECRET_KEY')
+HASHID_FIELD_SALT = env('HASHID_FIELD_SALT')
 
 DEBUG = True
 
