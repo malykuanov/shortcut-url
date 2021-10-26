@@ -10,6 +10,9 @@ class Urls(models.Model):
     clicks = models.IntegerField(default=0)
     time_create = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "Urls"
+
     def save(self, *args, **kwargs):
         super(Urls, self).save(*args, **kwargs)
         hashids = Hashids(salt=settings.HASHID_FIELD_SALT, min_length=5)
