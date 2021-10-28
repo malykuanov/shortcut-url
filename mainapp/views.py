@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 
 from mainapp.forms import ShortUrlForm
@@ -19,3 +20,11 @@ def shorturl(request):
     short_url = request.session.get('short_url')
     url = Urls.objects.filter(short_url=short_url).first()
     return render(request, 'mainapp/shorturl.html', {'url': url})
+
+
+def redirect_on_site(request, short_url):
+    url = Urls.objects.filter(short_url=short_url).first()
+    if url:
+        return HttpResponseRedirect(url.long_url)
+    else:
+        return redirect('home')
