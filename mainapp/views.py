@@ -1,14 +1,21 @@
-from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
 from mainapp.forms import ShortUrlForm
+from mainapp.models import Urls
 
 
 def index(request):
     form = ShortUrlForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
-            return redirect('home')
+            url = form.save()
+            request.session['short_url'] = url.short_url
+            return redirect('shorturl')
 
     return render(request, 'mainapp/index.html', {'form': form})
+
+
+def shorturl(request):
+    short_url = request.session.get('short_url')
+    url = Urls.objects.filter(short_url=short_url).first()
+    return render(request, 'mainapp/shorturl.html', {'url': url})
