@@ -1,0 +1,56 @@
+{% extends 'mainapp/index.html' %}
+
+{% block content %}
+
+<section id="short_url">
+    {% if url %}
+        <h1>Ваш сокращенный URL</h1>
+        <p>
+            Скопируйте сокращенную ссылку и поделитесь ею
+            в сообщениях, текстах, публикациях, на веб-сайтах и в других местах
+        </p>
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-auto">
+                <p style="margin: 0">
+                    <a href="{% url 'redirect_on_site' url.short_url %}" target="_blank" id="copylink">
+                        {{ request.get_host }}/{{ url.short_url }}
+                    </a>
+                </p>
+            </div>
+            <div class="col-auto">
+                <script>
+                  function CopyToClipboard(containerid) {
+                      if (document.selection) {
+                        var range = document.body.createTextRange();
+                        range.moveToElementText(document.getElementById(containerid));
+                        range.select().createTextRange();
+                        document.execCommand("copy");
+                      } else if (window.getSelection) {
+                        var range = document.createRange();
+                        range.selectNode(document.getElementById(containerid));
+                        window.getSelection().removeAllRanges(range);
+                        window.getSelection().addRange(range);
+                        document.execCommand("copy");
+                      }
+                  }
+                </script>
+                <button type="button" onclick="CopyToClipboard('copylink')" class="btn btn-primary" style="width: 150px;">Скопировать</button>
+            </div>
+            <p style="margin: 20px 0 0 0;">
+                Длинная ссылка: <a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:70 }} </a>
+            </p>
+        </div>
+    {% else %}
+        <h3 style="margin-bottom: 10px">Ссылка для сокращения не указана. Воспользуйтесь инструментом по сокращению ссылок
+            на <a href="{%  url 'home' %}"> главной странице</a></h3>
+    {% endif %}
+        <p style="margin: 10px 0;">
+            Отслеживайте в режиме реального времени общее количество кликов по сокращенному URL
+        </p>
+        <p>
+            Создайте другой <a href="{%  url 'home' %}">сокращенный URL<a>
+        </p>
+
+</section>
+
+{% endblock %}
