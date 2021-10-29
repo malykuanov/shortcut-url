@@ -50,5 +50,4 @@ def check_clicks(request):
                     "Ссылка указана неверно. Проверьте домен и короткий URL"
                 )
 
-    return render(request, 'mainapp/click_counter.html', {'form': form})
-
+    return render(request, 'mainapp/check_clicks.html', {'form': form})
