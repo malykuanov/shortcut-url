@@ -1,5 +1,5 @@
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 
 import re
@@ -51,3 +51,14 @@ def check_clicks(request):
                 )
 
     return render(request, 'mainapp/check_clicks.html', {'form': form})
+
+
+def clicks_counter(request, short_url):
+    url = Urls.objects.filter(short_url=short_url).first()
+    clicks = 0
+    if url:
+        clicks = url.clicks
+
+    return render(request,
+                  'mainapp/clicks_counter.html',
+                  {'clicks': clicks})
