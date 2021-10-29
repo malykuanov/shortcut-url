@@ -1,0 +1,34 @@
+{% extends 'mainapp/index.html' %}
+
+{% block content %}
+
+<section id="short_url">
+    <h1>Счетчик кликов URL</h1>
+    <p>
+        Введите URL-адрес, чтобы узнать, сколько кликов он получил на данный момент
+    </p>
+    <div class="row d-flex justify-content-center align-items-center">
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group-lg">
+                {{ form.short_url }}
+                <button type="submit" class="btn btn-primary">Проверить клики</button>
+            </div>
+            <div class="form-errors mt-2">
+                <ul>
+                    {% for field in form %}
+                        <li>{{ field.errors|striptags }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.non_field_errors }}
+            </div>
+        </form>
+        <p style="color: grey;">Example: {{ request.get_host }}/AbCdE</p>
+    </div>
+    <p class="mt-5 p-2">
+        * Отслеживайте общее количество обращений по сокращенному URL-адресу
+        в режиме реального времени, вам не нужно регистрироваться
+    </p>
+</section>
+
+{% endblock %}
