@@ -12,3 +12,13 @@ class ShortUrlForm(forms.ModelForm):
                 'class': 'form-input',
                 'placeholder': 'Укажите ссылку для сокращения ...'})
         }
+
+
+class CheckClickUrlForm(forms.Form):
+    short_url = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'form-input-clicks',
+            'placeholder': 'Укажите здесь короткую ссылку ...'
+        })
+    )
