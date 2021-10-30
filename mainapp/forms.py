@@ -32,3 +32,14 @@ class ReportWrongUrlForm(forms.Form):
             'rows': 5
         })
     )
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField(max_length=100)
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'cols': 20,
+            'rows': 5
+        })
+    )
