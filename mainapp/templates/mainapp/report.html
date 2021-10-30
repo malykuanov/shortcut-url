@@ -1,0 +1,41 @@
+{% extends 'mainapp/index.html' %}
+
+{% block content %}
+
+<section id="short_url">
+    <h1>Сообщить о вредоносной короткой ссылке</h1>
+    <p>
+        Используйте форму ниже, чтобы сообщить об URL-адресах, которые распространяют
+        спам и вредоносное ПО. Помогите нам, отправив ссылки, которые противоречат нашим
+        условиям использования, мы удалим и заблокируем эти сокращенные ссылки.
+        Если спамеры отправляют вам электронные письма, содержащие наши сокращенные URL-адреса,
+        сообщите нам, и мы сможем быстро принять меры, чтобы избежать распространения неприемлемых ссылок.
+    </p>
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="row w-50 m-0">
+            <p>Неверная или вредоносная ссылка</p>
+            {{ form.short_url }}
+            <p class="mt-2">Комментарий</p>
+            {{ form.comment }}
+            <button type="submit" class="btn btn-primary mt-2">Отправить</button>
+        </div>
+        <div class="form-errors mt-2">
+            <ul>
+                {% for field in form %}
+                    <li>{{ field.errors|striptags }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.non_field_errors }}
+        </div>
+    </form>
+</section>
+
+{% endblock %}
