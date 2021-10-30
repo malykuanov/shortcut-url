@@ -22,3 +22,13 @@ class CheckClickUrlForm(forms.Form):
             'placeholder': 'Укажите здесь короткую ссылку ...'
         })
     )
+
+
+class ReportWrongUrlForm(forms.Form):
+    short_url = forms.CharField(max_length=100)
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'cols': 20,
+            'rows': 5
+        })
+    )
