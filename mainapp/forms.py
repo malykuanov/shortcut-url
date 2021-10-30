@@ -1,4 +1,6 @@
 from django import forms
+from django.conf import settings
+from django.core.mail import send_mail
 
 from mainapp.models import Urls
 
@@ -43,3 +45,11 @@ class ContactForm(forms.Form):
             'rows': 5
         })
     )
+
+    def send_email(self):
+        send_mail(
+            self.cleaned_data['name'],
+            self.cleaned_data['message'],
+            self.cleaned_data['email'],
+            [settings.ADMIN_MAIL]
+        )
