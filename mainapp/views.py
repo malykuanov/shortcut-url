@@ -71,15 +71,14 @@ class CheckClicks(FormView):
         return self.request.path
     
 
-def clicks_counter(request, short_url):
-    url = Urls.objects.filter(short_url=short_url).first()
-    clicks = 0
-    if url:
-        clicks = url.clicks
+class ClicksCounter(TemplateView):
+    template_name = 'mainapp/clicks_counter.html'
 
-    return render(request,
-                  'mainapp/clicks_counter.html',
-                  {'clicks': clicks})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        url = Urls.objects.filter(short_url=self.kwargs['short_url']).first()
+        context['clicks'] = url.clicks if url else 0
+        return context
 
 
 class ReportWrongUrl(FormView):
