@@ -8,7 +8,7 @@ from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from mainapp.forms import (ShortUrlForm, CheckClickUrlForm,
                            ReportWrongUrlForm, ContactForm)
@@ -95,8 +95,8 @@ def report_wrong_url(request):
     return render(request, 'mainapp/report.html', {'form': form})
 
 
-def terms_of_service(request):
-    return render(request, 'mainapp/terms_of_service.html')
+class TermsOfService(TemplateView):
+    template_name = 'mainapp/terms_of_service.html'
 
 
 class Contact(FormView):
