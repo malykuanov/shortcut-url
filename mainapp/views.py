@@ -7,7 +7,8 @@ from django.shortcuts import redirect, render
 
 import re
 
-from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ReportWrongUrlForm
+from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ReportWrongUrlForm, \
+    ContactForm
 from mainapp.models import Urls
 
 
@@ -90,3 +91,21 @@ def report_wrong_url(request):
 
 def terms_of_service(request):
     return render(request, 'mainapp/terms_of_service.html')
+
+
+def contact(request):
+    form = ContactForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            send_mail(
+                form.cleaned_data['name'],
+                form.cleaned_data['message'],
+                form.cleaned_data['email'],
+                [settings.ADMIN_MAIL]
+            )
+            messages.success(request, 'Сообщение отправлено')
+            form = ContactForm()
+
+            return render(request, 'mainapp/contact.html', {'form': form})
+
+    return render(request, 'mainapp/contact.html', {'form': form})
