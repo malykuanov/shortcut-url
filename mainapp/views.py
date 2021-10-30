@@ -26,11 +26,14 @@ def index(request):
     return render(request, 'mainapp/index.html', {'form': form})
 
 
-def shorturl(request):
-    short_url = request.session.get('short_url')
-    url = Urls.objects.filter(short_url=short_url).first()
+class ShortUrl(TemplateView):
+    template_name = 'mainapp/shorturl.html'
 
-    return render(request, 'mainapp/shorturl.html', {'url': url})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        short_url = self.request.session.get('short_url')
+        context['url'] = Urls.objects.filter(short_url=short_url).first()
+        return context
 
 
 class RedirectOnSite(View):
