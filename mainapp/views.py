@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
+from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 
@@ -33,6 +34,9 @@ def shorturl(request):
 def redirect_on_site(request, short_url):
     url = Urls.objects.filter(short_url=short_url).first()
     if url:
+        (Urls.objects
+             .filter(short_url=url.short_url)
+             .update(clicks=F('clicks') + 1))
         return HttpResponseRedirect(url.long_url)
     else:
         return redirect('home')
