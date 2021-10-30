@@ -86,3 +86,7 @@ def report_wrong_url(request):
             return render(request, 'mainapp/report.html', {'form': form})
 
     return render(request, 'mainapp/report.html', {'form': form})
+
+
+def terms_of_service(request):
+    return render(request, 'mainapp/terms_of_service.html')
