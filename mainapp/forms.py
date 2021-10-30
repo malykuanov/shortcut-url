@@ -1,5 +1,9 @@
+import re
+
 from django import forms
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 
 from mainapp.models import Urls
@@ -24,6 +28,14 @@ class CheckClickUrlForm(forms.Form):
             'placeholder': 'Укажите здесь короткую ссылку ...'
         })
     )
+
+    def check_correct_url(self, domain):
+        url = self.cleaned_data.get('short_url')
+        regex = r'^' + domain + r'.\w{5}$'
+        if re.match(regex, url):
+            return url.split('/')[1]
+        else:
+            return False
 
 
 class ReportWrongUrlForm(forms.Form):
