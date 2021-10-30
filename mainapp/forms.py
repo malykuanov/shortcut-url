@@ -35,6 +35,14 @@ class ReportWrongUrlForm(forms.Form):
         })
     )
 
+    def send_email(self):
+        send_mail(
+            self.cleaned_data['short_url'],
+            self.cleaned_data['comment'],
+            settings.ADMIN_MAIL,
+            [settings.ADMIN_MAIL]
+        )
+
 
 class ContactForm(forms.Form):
     name = forms.CharField(max_length=100)
