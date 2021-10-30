@@ -67,7 +67,7 @@ def clicks_counter(request, short_url):
                   {'clicks': clicks})
 
 
-def report(request):
+def report_wrong_url(request):
     form = ReportWrongUrlForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
