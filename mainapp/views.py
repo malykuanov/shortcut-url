@@ -33,15 +33,17 @@ def shorturl(request):
     return render(request, 'mainapp/shorturl.html', {'url': url})
 
 
-def redirect_on_site(request, short_url):
-    url = Urls.objects.filter(short_url=short_url).first()
-    if url:
-        (Urls.objects
-             .filter(short_url=url.short_url)
-             .update(clicks=F('clicks') + 1))
-        return HttpResponseRedirect(url.long_url)
-    else:
-        return redirect('home')
+class RedirectOnSite(View):
+
+    def dispatch(self, request, *args, **kwargs):
+        url = Urls.objects.filter(short_url=self.kwargs['short_url']).first()
+        if url:
+            (Urls.objects
+                 .filter(short_url=url.short_url)
+                 .update(clicks=F('clicks') + 1))
+            return HttpResponseRedirect(url.long_url)
+        else:
+            return redirect('home')
 
 
 def check_clicks(request):
