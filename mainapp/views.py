@@ -3,6 +3,7 @@ import re
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db.models import F
 from django.http import HttpResponseRedirect
@@ -49,24 +50,26 @@ class RedirectOnSite(View):
             return redirect('home')
 
 
-def check_clicks(request):
-    form = CheckClickUrlForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            url = form.cleaned_data['short_url']
-            domain = str(get_current_site(request))
-            regex = r'^' + domain + r'.\w{5}$'
-            if re.match(regex, url):
-                short_url = url.split('/')[1]
-                return redirect('clicks', short_url)
-            else:
-                form.add_error(
-                    None,
-                    "Ссылка указана неверно. Проверьте домен и короткий URL"
-                )
+class CheckClicks(FormView):
+    template_name = 'mainapp/check_clicks.html'
+    form_class = CheckClickUrlForm
 
-    return render(request, 'mainapp/check_clicks.html', {'form': form})
+    def form_valid(self, form):
+        short_url = form.check_correct_url(
+            domain=str(get_current_site(self.request))
+        )
+        if short_url:
+            return redirect('clicks', short_url)
+        else:
+            messages.error(
+                self.request,
+                "Ссылка указана неверно. Проверьте домен и короткий URL"
+            )
+            return super().form_valid(form)
 
+    def get_success_url(self):
+        return self.request.path
+    
 
 def clicks_counter(request, short_url):
     url = Urls.objects.filter(short_url=short_url).first()
