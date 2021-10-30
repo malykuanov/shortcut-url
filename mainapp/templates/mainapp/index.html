@@ -88,7 +88,8 @@
                 <a href="https://www.linkedin.com/" target="_blank">Linked In</a>
                 и популярных сайтов в Интернете, просто вставьте длинный URL-адрес и нажмите кнопку «Сократить URL».
                 На следующем экране скопируйте сокращенный URL-адрес и поделитесь им на веб-сайтах, в чате и по электронной почте.
-                После сокращения URL-адреса вы можете проверить кол-во переходов по вашей ссылке.
+                После сокращения URL-адреса вы можете
+                <a href="{% url 'check_clicks' %}">проверить кол-во переходов </a> по вашей ссылке.
             </p>
         </div>
         <div class="row">
@@ -143,10 +144,10 @@
 <footer class="py-3 mt-5">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
       <li class="nav-item"><a href="{% url 'home' %}" class="nav-link px-2">ShortCutURL</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2">Features</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2">Pricing</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2">FAQs</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2">About</a></li>
+      <li class="nav-item"><a href="{% url 'check_clicks' %}" class="nav-link px-2">Счетчик кликов</a></li>
+      <li class="nav-item"><a href="{% url 'report' %}" class="nav-link px-2">Сообщить о плохой ссылке</a></li>
+      <li class="nav-item"><a href="{% url 'terms' %}" class="nav-link px-2">Условия использования</a></li>
+      <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link px-2">Контакты</a></li>
     </ul>
     <p class="text-center text-muted">© 2021 ShortCutURL - Инструмент для сокращения длинных ссылок</p>
   </footer>
