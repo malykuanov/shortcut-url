@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
@@ -5,11 +7,11 @@ from django.core.mail import send_mail
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.views import View
+from django.views.generic import FormView
 
-import re
-
-from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ReportWrongUrlForm, \
-    ContactForm
+from mainapp.forms import (ShortUrlForm, CheckClickUrlForm,
+                           ReportWrongUrlForm, ContactForm)
 from mainapp.models import Urls
 
 
@@ -97,19 +99,14 @@ def terms_of_service(request):
     return render(request, 'mainapp/terms_of_service.html')
 
 
-def contact(request):
-    form = ContactForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            send_mail(
-                form.cleaned_data['name'],
-                form.cleaned_data['message'],
-                form.cleaned_data['email'],
-                [settings.ADMIN_MAIL]
-            )
-            messages.success(request, 'Сообщение отправлено')
-            form = ContactForm()
+class Contact(FormView):
+    template_name = 'mainapp/contact.html'
+    form_class = ContactForm
 
-            return render(request, 'mainapp/contact.html', {'form': form})
+    def form_valid(self, form):
+        form.send_email()
+        messages.success(self.request, 'Сообщение отправлено')
+        return super().form_valid(form)
 
-    return render(request, 'mainapp/contact.html', {'form': form})
+    def get_success_url(self):
+        return self.request.path
