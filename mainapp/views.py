@@ -76,25 +76,17 @@ def clicks_counter(request, short_url):
                   {'clicks': clicks})
 
 
-def report_wrong_url(request):
-    form = ReportWrongUrlForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            subject = form.cleaned_data['short_url']
-            message = form.cleaned_data['comment']
+class ReportWrongUrl(FormView):
+    template_name = 'mainapp/report.html'
+    form_class = ReportWrongUrlForm
 
-            send_mail(
-                subject,
-                message,
-                settings.ADMIN_MAIL,
-                [settings.ADMIN_MAIL]
-            )
-            messages.success(request, 'Сообщение отправлено')
-            form = ReportWrongUrlForm()
+    def form_valid(self, form):
+        form.send_email()
+        messages.success(self.request, 'Сообщение отправлено')
+        return super().form_valid(form)
 
-            return render(request, 'mainapp/report.html', {'form': form})
-
-    return render(request, 'mainapp/report.html', {'form': form})
+    def get_success_url(self):
+        return self.request.path
 
 
 class TermsOfService(TemplateView):
