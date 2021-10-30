@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from mainapp.views import (index, shorturl, redirect_on_site, check_clicks,
-                           clicks_counter, report_wrong_url)
+                           clicks_counter, report_wrong_url, terms_of_service)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('url-click-counter/', check_clicks, name='check_clicks'),
     path('url-click-counter/<slug:short_url>', clicks_counter, name='clicks'),
     path('report-wrong-url/', report_wrong_url, name='report'),
+    path('terms-of-service/', terms_of_service, name='terms'),
     path('<slug:short_url>/', redirect_on_site, name='redirect_on_site'),
 ]
