@@ -1,10 +1,13 @@
+from django.conf import settings
+from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 
 import re
 
-from mainapp.forms import ShortUrlForm, CheckClickUrlForm
+from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ReportWrongUrlForm
 from mainapp.models import Urls
 
 
@@ -62,3 +65,24 @@ def clicks_counter(request, short_url):
     return render(request,
                   'mainapp/clicks_counter.html',
                   {'clicks': clicks})
+
+
+def report(request):
+    form = ReportWrongUrlForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            subject = form.cleaned_data['short_url']
+            message = form.cleaned_data['comment']
+
+            send_mail(
+                subject,
+                message,
+                settings.ADMIN_MAIL,
+                [settings.ADMIN_MAIL]
+            )
+            messages.success(request, 'Сообщение отправлено')
+            form = ReportWrongUrlForm()
+
+            return render(request, 'mainapp/report.html', {'form': form})
+
+    return render(request, 'mainapp/report.html', {'form': form})
