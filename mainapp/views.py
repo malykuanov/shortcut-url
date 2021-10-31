@@ -3,11 +3,11 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.urls import resolve
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from mainapp.forms import (ShortUrlForm, CheckClickUrlForm,
-                           ReportWrongUrlForm, ContactForm)
+from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ContactForm
 from mainapp.models import Urls
 
 
@@ -76,25 +76,9 @@ class ClicksCounter(TemplateView):
         return context
 
 
-class ReportWrongUrl(FormView):
-    template_name = 'mainapp/report.html'
-    form_class = ReportWrongUrlForm
-
-    def form_valid(self, form):
-        form.send_email()
-        messages.success(self.request, 'Сообщение отправлено')
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return self.request.path
-
-
-class TermsOfService(TemplateView):
-    template_name = 'mainapp/terms_of_service.html'
-
-
 class Contact(FormView):
-    template_name = 'mainapp/contact.html'
+    wrong_url_template_name = 'mainapp/report.html'
+    contact_template_name = 'mainapp/contact.html'
     form_class = ContactForm
 
     def form_valid(self, form):
@@ -104,3 +88,13 @@ class Contact(FormView):
 
     def get_success_url(self):
         return self.request.path
+
+    def get_template_names(self):
+        if resolve(self.request.path_info).url_name == 'report':
+            return [self.wrong_url_template_name]
+        else:
+            return [self.contact_template_name]
+
+
+class TermsOfService(TemplateView):
+    template_name = 'mainapp/terms_of_service.html'
