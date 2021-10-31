@@ -1,10 +1,5 @@
-import re
-
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -16,15 +11,15 @@ from mainapp.forms import (ShortUrlForm, CheckClickUrlForm,
 from mainapp.models import Urls
 
 
-def index(request):
-    form = ShortUrlForm(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            url = form.save()
-            request.session['short_url'] = url.short_url
-            return redirect('shorturl')
+class HomePage(FormView):
+    form_class = ShortUrlForm
+    template_name = 'mainapp/index.html'
+    success_url = '/shorturl/'
 
-    return render(request, 'mainapp/index.html', {'form': form})
+    def form_valid(self, form):
+        url = form.save()
+        self.request.session['short_url'] = url.short_url
+        return super().form_valid(form)
 
 
 class ShortUrl(TemplateView):
