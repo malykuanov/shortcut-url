@@ -40,10 +40,6 @@
                 Длинная ссылка: <a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:70 }} </a>
             </p>
         </div>
-    {% else %}
-        <h3 style="margin-bottom: 10px">Ссылка для сокращения не указана. Воспользуйтесь инструментом по сокращению ссылок
-            на <a href="{%  url 'home' %}"> главной странице</a></h3>
-    {% endif %}
         <p style="margin: 10px 0;">
             Отслеживайте в режиме реального времени
             <a href="{% url 'clicks' url.short_url %}" target="_blank"> общее количество кликов </a>
@@ -52,6 +48,11 @@
         <p>
             Создайте другой <a href="{%  url 'home' %}">сокращенный URL</a>
         </p>
+    {% else %}
+        <h4 style="margin-bottom: 10px">Ссылка для сокращения не указана. Воспользуйтесь инструментом по сокращению ссылок
+            на <a href="{%  url 'home' %}"> главной странице</a></h4>
+    {% endif %}
+
 
 </section>
 
