@@ -62,11 +62,8 @@ class CheckClicks(FormView):
                 self.request,
                 "Ссылка указана неверно. Проверьте домен и короткий URL"
             )
-            return super().form_valid(form)
+            return redirect('check_clicks')
 
-    def get_success_url(self):
-        return self.request.path
-    
 
 class ClicksCounter(TemplateView):
     template_name = 'mainapp/clicks_counter.html'
