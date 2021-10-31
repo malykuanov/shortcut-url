@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import F
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.urls import resolve
+from django.shortcuts import redirect
+from django.urls import resolve, reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
@@ -14,13 +14,14 @@ from mainapp.models import Urls
 class HomePage(FormView):
     form_class = ShortUrlForm
     template_name = 'mainapp/index.html'
-    success_url = '/shorturl/'
 
     def form_valid(self, form):
         url = form.save()
         self.request.session['short_url'] = url.short_url
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse('shorturl')
 
 class ShortUrl(TemplateView):
     template_name = 'mainapp/shorturl.html'
