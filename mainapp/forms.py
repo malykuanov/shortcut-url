@@ -2,8 +2,6 @@ import re
 
 from django import forms
 from django.conf import settings
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 
 from mainapp.models import Urls
@@ -48,26 +46,8 @@ class CheckClickUrlForm(forms.Form):
             return False
 
 
-class ReportWrongUrlForm(forms.Form):
-    short_url = forms.CharField(max_length=100)
-    comment = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'cols': 20,
-            'rows': 5
-        })
-    )
-
-    def send_email(self):
-        send_mail(
-            self.cleaned_data['short_url'],
-            self.cleaned_data['comment'],
-            settings.ADMIN_MAIL,
-            [settings.ADMIN_MAIL]
-        )
-
-
 class ContactForm(forms.Form):
-    name = forms.CharField(max_length=100)
+    subject = forms.CharField(max_length=100)
     email = forms.EmailField(max_length=100)
     message = forms.CharField(
         widget=forms.Textarea(attrs={
@@ -78,7 +58,7 @@ class ContactForm(forms.Form):
 
     def send_email(self):
         send_mail(
-            self.cleaned_data['name'],
+            self.cleaned_data['subject'],
             self.cleaned_data['message'],
             self.cleaned_data['email'],
             [settings.ADMIN_MAIL]
