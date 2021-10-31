@@ -30,6 +30,16 @@ class CheckClickUrlForm(forms.Form):
     )
 
     def check_correct_url(self, domain):
+        """Checking url for a schema: {domain}/{short_url}
+
+        Keyword argument:
+        domain (str) -- site domain without port
+
+        Returned value:
+        short_url (str) - if url matches the schema
+        false (bool) - if url incorrect
+        """
+
         url = self.cleaned_data.get('short_url')
         regex = r'^' + domain + r'.\w{5}$'
         if re.match(regex, url):
