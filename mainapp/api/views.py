@@ -1,6 +1,7 @@
 from django.http import Http404
 from rest_framework import permissions
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import (TokenAuthentication,
+                                           BasicAuthentication)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,7 +12,7 @@ from mainapp.models import Urls
 class UrlsListView(APIView):
     """Show url list"""
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -30,7 +31,7 @@ class UrlsListView(APIView):
 class UrlDetailView(APIView):
     """Show url detail"""
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [BasicAuthentication, TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self, short_url):
