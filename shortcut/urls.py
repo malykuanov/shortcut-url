@@ -6,7 +6,8 @@ from mainapp.views import (CheckClicks, Contact, TermsOfService,
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    path('api-auth/', include('djoser.urls')),
+    path('api-auth/', include('djoser.urls.authtoken')),
     path('api/v1/', include('mainapp.api.urls')),
     path('', HomePage.as_view(), name='home'),
     path('shorturl/', ShortUrl.as_view(), name='shorturl'),
