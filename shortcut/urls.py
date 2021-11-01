@@ -1,11 +1,13 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from mainapp.views import (CheckClicks, Contact, TermsOfService,
                            RedirectOnSite, ShortUrl, ClicksCounter, HomePage)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/', include('mainapp.api.urls')),
     path('', HomePage.as_view(), name='home'),
     path('shorturl/', ShortUrl.as_view(), name='shorturl'),
     path('url-click-counter/', CheckClicks.as_view(), name='check_clicks'),
