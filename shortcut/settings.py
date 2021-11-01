@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'mainapp.apps.MainappConfig',
 ]
 
@@ -106,3 +108,11 @@ EMAIL_HOST_USER = env('ADMIN_MAIL')
 EMAIL_HOST_PASSWORD = env('ADMIN_MAIL_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
