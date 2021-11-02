@@ -7,7 +7,7 @@ from hashids import Hashids
 class Urls(models.Model):
     long_url = models.URLField(max_length=2000)
     short_url = models.CharField(max_length=5, blank=True)
-    clicks = models.IntegerField(default=0)
+    clicks = models.PositiveIntegerField(default=0)
     time_create = models.DateTimeField(auto_now_add=True)
 
     class Meta:
