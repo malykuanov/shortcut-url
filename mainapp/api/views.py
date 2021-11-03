@@ -55,6 +55,8 @@ class UrlDetailView(APIView):
 
     def patch(self, request, short_url):
         url = self.get_object(short_url)
+        if request.data.get("short_url"):
+            return Response("short_url immutable!", status=400)
         serializer = UrlsSerializer(url, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
