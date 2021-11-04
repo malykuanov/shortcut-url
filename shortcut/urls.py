@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
@@ -19,3 +20,9 @@ urlpatterns = [
     path('contact/', Contact.as_view(), name='contact'),
     path('<slug:short_url>/', RedirectOnSite.as_view(), name='redirect_on_site'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
