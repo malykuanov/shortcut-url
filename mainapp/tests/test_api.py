@@ -29,7 +29,7 @@ class RegistrationAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-class UrlsAPITest(TestCase):
+class UrlsAPITest(APITestCase):
     """ Test module for Urls API """
 
     @classmethod
@@ -48,7 +48,6 @@ class UrlsAPITest(TestCase):
         self.user = User.objects.create_user(username="test_name",
                                              password="some_strong_password")
         self.token = Token.objects.create(user=self.user)
-        self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
     def test_urls_authenticated_by_token(self):
