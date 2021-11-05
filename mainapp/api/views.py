@@ -1,12 +1,13 @@
 from django.http import Http404
 from rest_framework import permissions
-from rest_framework.authentication import (TokenAuthentication,
-                                           BasicAuthentication)
+from rest_framework.authentication import (BasicAuthentication,
+                                           TokenAuthentication)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import UrlsSerializer, CreateUrlSerializer
 from mainapp.models import Urls
+
+from .serializers import CreateUrlSerializer, UrlsSerializer
 
 
 class UrlsListView(APIView):
