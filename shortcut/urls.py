@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
-from mainapp.views import (CheckClicks, Contact, TermsOfService,
-                           RedirectOnSite, ShortUrl, ClicksCounter, HomePage)
+from mainapp.views import (CheckClicks, ClicksCounter, Contact, HomePage,
+                           RedirectOnSite, ShortUrl, TermsOfService)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
