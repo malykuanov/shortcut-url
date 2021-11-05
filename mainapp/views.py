@@ -7,7 +7,7 @@ from django.urls import resolve, reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from mainapp.forms import ShortUrlForm, CheckClickUrlForm, ContactForm
+from mainapp.forms import CheckClickUrlForm, ContactForm, ShortUrlForm
 from mainapp.models import Urls
 
 
