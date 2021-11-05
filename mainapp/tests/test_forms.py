@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from mainapp.forms import ShortUrlForm, CheckClickUrlForm
+from mainapp.forms import CheckClickUrlForm, ShortUrlForm
 
 
 class FormsUrlsTest(TestCase):
