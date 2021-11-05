@@ -1,9 +1,9 @@
-from django.test import TestCase, Client
-from django.urls import reverse, resolve
+from django.test import Client, TestCase
+from django.urls import resolve, reverse
 
 from mainapp.models import Urls
-from mainapp.views import HomePage, ShortUrl, CheckClicks, ClicksCounter, \
-    Contact, TermsOfService
+from mainapp.views import (CheckClicks, ClicksCounter, Contact, HomePage,
+                           ShortUrl, TermsOfService)
 
 
 class UrlsViewsTest(TestCase):
