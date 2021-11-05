@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .views import UrlsListView, UrlDetailView
-
+from .views import UrlDetailView, UrlsListView
 
 app_name = "mainapp"
 
