@@ -83,6 +83,8 @@ class UrlsAPITest(APITestCase):
         valid_url = "http://example.com/new"
         invalid_url = "example.com/new"
         response = self.client.post(self.list_url, {"long_url": valid_url})
+        serializer = UrlsSerializer(response.data)
+        self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.post(self.list_url, {"long_url": invalid_url})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
