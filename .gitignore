@@ -151,3 +151,6 @@ cython_debug/
 
 # mainapp
 /mainapp/static/mainapp/images/
+
+#init postgresdb for docker with user and password
+/docker/postgres/init.sql
