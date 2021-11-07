@@ -13,7 +13,7 @@ HASHID_FIELD_SALT = env('HASHID_FIELD_SALT')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(" ")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'psycopg2',
     'bootstrap5',
     'rest_framework',
     'rest_framework.authtoken',
