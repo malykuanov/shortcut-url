@@ -1,0 +1,34 @@
+{% extends 'mainapp/index.html' %}
+
+{% block content %}
+
+<section id="short_url">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h3 style="font-family: Arial,sans-serif; font-size: 34px;">Зарегистрируйтесь и начните сокращать</h3>
+        <h2 class="mt-1" style="font-family: Arial,sans-serif; font-size: 20px; text-align: center;">
+            Регистрация позволяет следить за сокращенными ссылками в удобном "дашборде"
+        </h2>
+        <h2 class="mt-1" style="font-family: Arial,sans-serif; font-size: 20px; text-align: center;">
+            Отслеживайте количество переходов и дату последнего визита Url
+        </h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row mt-2" style="width: 65%;">
+            {% for field in form %}
+                <p class="mb-2" style="color: #6c6d71;">{{ field.label }}</p>
+                {{ field }}
+                <div class="form-errors mt-2">
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-2">Регистрация</button>
+        </div>
+        <div class="form-errors mt-2">
+            {{ form.non_field_errors }}
+        </div>
+    </form>
+    </div>
+
+</section>
+
+{% endblock %}
