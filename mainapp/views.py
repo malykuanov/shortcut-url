@@ -17,7 +17,13 @@ class HomePage(FormView):
 
     def form_valid(self, form):
         url = form.save()
-        self.request.session['short_url'] = url.short_url
+        # Using sessions to save the last
+        # 5 shortened links for an anonymous user
+        self.request.session.setdefault('short_url', [])
+        if len(self.request.session['short_url']) == 5:
+            del self.request.session['short_url'][0]
+        self.request.session['short_url'].append(url.short_url)
+        self.request.session.modified = True
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -29,7 +35,7 @@ class ShortUrl(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        short_url = self.request.session.get('short_url')
+        short_url = self.request.session.get('short_url')[-1]
         context['url'] = Urls.objects.filter(short_url=short_url).first()
         return context
 
