@@ -98,8 +98,9 @@ h1{
 
 .form-errors{
     border-radius: 10px;
-    color: blue;
-    background: lightpink;
+    color: #ee2567;
+    background: white;
+    font-weight: bold;
 
 }
 
