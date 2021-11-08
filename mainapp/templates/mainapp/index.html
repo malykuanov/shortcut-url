@@ -5,7 +5,7 @@
     <title>ShortUrl</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    {% bootstrap_javascript  %}
+    {% bootstrap_javascript %}
 
     {% load static %}
     <link type="text/css" href="{% static 'mainapp/css/styles.css' %}" rel="stylesheet">
@@ -31,7 +31,7 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="row g-2 my-2">
-                    <div class="input-group-lg mb-3 ">
+                    <div class="input-group-lg mb-1 ">
                         {{ form.long_url }}
                         <button type="submit" class="btn btn-primary">Сократить URL</button>
                     </div>
@@ -69,7 +69,27 @@
                     </div>
                 </div>
             </form>
-            <p class="d-flex justify-content-center align-items-center" style="margin-bottom: 0">
+            <div class="container">
+                <input type="checkbox" id="hd-1" class="hide"/>
+                <label for="hd-1" >Последние сокращенные ссылки </label>
+                    <div id="urlbox" style="background: #f6f4f4">
+                    {% if list_url %}
+                        {% for url in list_url %}
+                            <li style="list-style-type: '\22A8'">
+                                Длинная ссылка: <a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:60 }} </a>
+                            </li>
+                            <li style="list-style-type: '\22A9'">
+                                Короткая ссылка: <a href="{% url 'redirect_on_site' url.short_url %}" target="_blank">{{ request.get_host }}/{{ url.short_url }}</a>
+                            </li>
+                            <br>
+                        {% endfor %}
+                        {% else %}
+                            <p>Вы еще не сокращали ссылки. Воспользуйтесь формой выше</p>
+                        {% endif %}
+                    </div>
+            </div>
+
+            <p class="d-flex justify-content-center align-items-center mt-2" style="margin-bottom: 0">
                 ShortCutURL - это бесплатный инструмент для сокращения URL-адреса или ссылки
             </p>
             <p class="d-flex justify-content-center align-items-center">

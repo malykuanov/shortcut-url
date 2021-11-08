@@ -29,6 +29,11 @@ class HomePage(FormView):
     def get_success_url(self):
         return reverse('shorturl')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        list_url = self.request.session.get('short_url', [])
+        context['list_url'] = Urls.objects.filter(short_url__in=list_url)
+        return context
 
 class ShortUrl(TemplateView):
     template_name = 'mainapp/shorturl.html'
