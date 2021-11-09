@@ -122,6 +122,7 @@ class RegistrationUser(CreateView):
 
 
 class LoginUser(LoginView):
+    redirect_authenticated_user = True
     form_class = AuthenticationForm
     template_name = 'mainapp/login.html'
 
