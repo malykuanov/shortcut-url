@@ -1,13 +1,17 @@
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.urls import resolve, reverse
+from django.urls import resolve, reverse, reverse_lazy
 from django.views import View
-from django.views.generic import FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView
 
-from mainapp.forms import CheckClickUrlForm, ContactForm, ShortUrlForm
+from mainapp.forms import (CheckClickUrlForm, ContactForm,
+                           RegistrationUserForm, ShortUrlForm)
 from mainapp.models import Urls
 
 
@@ -34,6 +38,7 @@ class HomePage(FormView):
         list_url = self.request.session.get('short_url', [])
         context['list_url'] = Urls.objects.filter(short_url__in=list_url)
         return context
+
 
 class ShortUrl(TemplateView):
     template_name = 'mainapp/shorturl.html'
@@ -108,3 +113,22 @@ class Contact(FormView):
 
 class TermsOfService(TemplateView):
     template_name = 'mainapp/terms_of_service.html'
+
+
+class RegistrationUser(CreateView):
+    form_class = RegistrationUserForm
+    template_name = 'mainapp/registration.html'
+    success_url = reverse_lazy('home')
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'mainapp/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
