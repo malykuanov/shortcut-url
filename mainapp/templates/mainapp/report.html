@@ -12,7 +12,7 @@
         сообщите нам, и мы сможем быстро принять меры, чтобы избежать распространения неприемлемых ссылок.
     </p>
     {% if messages %}
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success text-uppercase" role="alert">
             {% for message in messages %}
                 {{ message }}
             {% endfor %}
@@ -20,7 +20,7 @@
     {% endif %}
     <form method="post">
         {% csrf_token %}
-        <div class="row w-50 m-0">
+        <div class="row w-50">
             <p class="mb-0">Неверная или вредоносная ссылка</p>
             {{ form.subject }}
             <p class="mt-2 mb-0">Email</p>
