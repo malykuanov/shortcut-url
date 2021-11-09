@@ -2,6 +2,8 @@ import re
 
 from django import forms
 from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
 from mainapp.models import Urls
@@ -63,3 +65,26 @@ class ContactForm(forms.Form):
             self.cleaned_data['email'],
             [settings.ADMIN_MAIL]
         )
+
+
+class RegistrationUserForm(UserCreationForm):
+    username = forms.CharField(
+        label='Логин',
+        widget=forms.TextInput
+    )
+    email = forms.CharField(
+        label='Адрес электронной почты',
+        widget=forms.EmailInput
+    )
+    password1 = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput
+    )
+    password2 = forms.CharField(
+        label='Подтверждение пароля',
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
