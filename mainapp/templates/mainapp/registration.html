@@ -11,9 +11,13 @@
         <h2 class="mt-1" style="font-family: Arial,sans-serif; font-size: 20px; text-align: center;">
             Отслеживайте количество переходов и дату последнего визита Url
         </h2>
-    <form method="post">
+    {% if request.user.is_authenticated %}
+        <h4 style="color: red; margin-top: 10px; text-align: center;">Вы зарегистрированы! Выйдите из системы для создания нового пользователя</h4>
+    {% else %}
+        <form method="post">
         {% csrf_token %}
         <div class="row mt-2" style="width: 65%;">
+
             {% for field in form %}
                 <p class="mb-2" style="color: #6c6d71;">{{ field.label }}</p>
                 {{ field }}
@@ -27,6 +31,7 @@
             {{ form.non_field_errors }}
         </div>
     </form>
+    {% endif %}
     </div>
 
 </section>
