@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
@@ -118,7 +118,11 @@ class TermsOfService(TemplateView):
 class RegistrationUser(CreateView):
     form_class = RegistrationUserForm
     template_name = 'mainapp/registration.html'
-    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
 
 
 class LoginUser(LoginView):
