@@ -20,6 +20,7 @@ class Urls(models.Model):
         default=get_default_user
     )
     time_create = models.DateTimeField(auto_now_add=True)
+    time_last_click = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Urls"
