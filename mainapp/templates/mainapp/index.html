@@ -26,7 +26,7 @@
                 <a class="btn btn-outline-danger" id="login-btn" href="{% url 'logout' %}" role="button">Выйти</a>
                 <a class="btn btn-outline-dark" id="login-btn" href="#" role="button">DashBoard</a>
                 <div class="row d-flex flex-row-reverse p-3" id="user-email">
-                    {{ request.user.email }}
+                    Добро пожаловать, {{ request.user.username|truncatechars:20 }} !
                 </div>
             {% else %}
                 <a class="btn btn-outline-primary" id="login-btn" href="{% url 'sign-up' %}" role="button">Регистрация</a>
