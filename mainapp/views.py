@@ -7,6 +7,7 @@ from django.db.models import F
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import resolve, reverse, reverse_lazy
+from django.utils import timezone
 from django.views import View
 from django.views.generic import CreateView, FormView, TemplateView
 
@@ -62,7 +63,8 @@ class RedirectOnSite(View):
         if url:
             (Urls.objects
                  .filter(short_url=url.short_url)
-                 .update(clicks=F('clicks') + 1))
+                 .update(clicks=F('clicks') + 1,
+                         time_last_click=timezone.now()))
             return HttpResponseRedirect(url.long_url)
         else:
             return redirect('home')
