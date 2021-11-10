@@ -20,7 +20,12 @@ class HomePage(FormView):
     template_name = 'mainapp/index.html'
 
     def form_valid(self, form):
-        url = form.save()
+        if self.request.user.is_authenticated:
+            url = form.save(commit=False)
+            url.owner = self.request.user
+            url.save()
+        else:
+            url = form.save()
         # Using sessions to save the last
         # 5 shortened links for an anonymous user
         self.request.session.setdefault('short_url', [])
