@@ -26,8 +26,7 @@ class CreateUrlSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         long_url = validated_data.get('long_url')
-        clicks = 0
         owner = self.context.get("request").user
-        url = Urls(long_url=long_url, clicks=clicks, owner=owner)
+        url = Urls(long_url=long_url, owner=owner)
         url.save()
         return url
