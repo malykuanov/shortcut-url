@@ -1,9 +1,8 @@
 from django.urls import path
 
-from .views import (logout_user, CheckClicks, ClicksCounter, Contact,
-                    Dashboard, HomePage, LoginUser, RedirectOnSite,
-                    RegistrationUser, ShortUrl, TermsOfService, DeleteUrl)
-
+from .views import (CheckClicks, ClicksCounter, Contact, Dashboard, DeleteUrl,
+                    HomePage, LoginUser, RedirectOnSite, RegistrationUser,
+                    ShortUrl, TermsOfService, logout_user)
 
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),

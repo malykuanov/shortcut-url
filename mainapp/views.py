@@ -6,12 +6,12 @@ from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import F
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import resolve, reverse, reverse_lazy
 from django.utils import timezone
 from django.views import View
-from django.views.generic import CreateView, FormView, ListView, TemplateView, \
-    DeleteView
+from django.views.generic import (CreateView, DeleteView, FormView, ListView,
+                                  TemplateView)
 
 from mainapp.forms import (CheckClickUrlForm, ContactForm,
                            RegistrationUserForm, ShortUrlForm)
