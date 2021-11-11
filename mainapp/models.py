@@ -7,7 +7,12 @@ User = get_user_model()
 
 
 def get_default_user():
-    return User.objects.get(username='default_user').pk
+    user, created = (User.objects
+                         .get_or_create(username=settings.DEFAULT_USERNAME))
+    if created:
+        user.set_password(settings.DEFAULT_PASSWORD)
+        user.save()
+    return user.pk
 
 
 class Urls(models.Model):
