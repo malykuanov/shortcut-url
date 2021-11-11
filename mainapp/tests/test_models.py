@@ -15,6 +15,8 @@ class UrlsModelTest(TestCase):
             url.save()
         cls.all_short_url = list(Urls.objects
                                      .values_list('short_url', flat=True))
+        cls.all_url_owner = list(Urls.objects
+                                     .values_list('owner', flat=True))
 
     def test_existence_short_url(self):
         self.assertNotIn("", self.all_short_url)
@@ -34,3 +36,9 @@ class UrlsModelTest(TestCase):
     def test_positive_clicks(self):
         with self.assertRaises(IntegrityError):
             Urls.objects.filter(pk=1).update(clicks=-10)
+
+    def test_default_owner(self):
+        self.assertEqual(
+            {1}, set(self.all_url_owner)
+        )
+        self.assertEqual(Urls.objects.first().owner.username, 'default_user')
