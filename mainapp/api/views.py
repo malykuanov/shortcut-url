@@ -17,12 +17,17 @@ class UrlsListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        urls = Urls.objects.all()
+        urls = (Urls.objects
+                    .filter(owner=self.request.user)
+                    .order_by('-time_create'))
         serializer = UrlsSerializer(urls, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        url = CreateUrlSerializer(data=request.data)
+        url = CreateUrlSerializer(
+            data=request.data,
+            context={'request': request}
+        )
         if url.is_valid():
             url.save()
             return Response(url.data, status=201)
@@ -56,8 +61,6 @@ class UrlDetailView(APIView):
 
     def patch(self, request, short_url):
         url = self.get_object(short_url)
-        if request.data.get("short_url"):
-            return Response("short_url immutable!", status=400)
         serializer = UrlsSerializer(url, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
