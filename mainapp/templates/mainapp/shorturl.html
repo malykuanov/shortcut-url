@@ -36,7 +36,7 @@
                 </script>
                 <button type="button" onclick="CopyToClipboard('copylink')" class="btn btn-primary" style="width: 150px;">Скопировать</button>
             </div>
-            <p style="margin: 20px 0 0 0;">
+            <p style="margin: 20px 0 0 0; word-break: break-all;">
                 Длинная ссылка: <a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:70 }} </a>
             </p>
         </div>
