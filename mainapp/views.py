@@ -1,15 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import F
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import resolve, reverse, reverse_lazy
 from django.utils import timezone
 from django.views import View
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, ListView, TemplateView, \
+    DeleteView
 
 from mainapp.forms import (CheckClickUrlForm, ContactForm,
                            RegistrationUserForm, ShortUrlForm)
@@ -68,6 +70,24 @@ class RedirectOnSite(View):
             return HttpResponseRedirect(url.long_url)
         else:
             return redirect('home')
+
+
+class Dashboard(LoginRequiredMixin, ListView):
+    model = Urls
+    paginate_by = 10
+    template_name = 'mainapp/dashboard.html'
+
+    def get_queryset(self):
+        return (Urls.objects
+                    .filter(owner=self.request.user)
+                    .order_by('-time_create'))
+
+
+class DeleteUrl(DeleteView):
+    model = Urls
+
+    def get_success_url(self):
+        return reverse('dashboard')
 
 
 class CheckClicks(FormView):

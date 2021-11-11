@@ -1,0 +1,70 @@
+{% extends 'mainapp/index.html' %}
+
+{% block content %}
+
+<section id="dashboard">
+    <div class="row">
+        <div class="pagination justify-content-center">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo;Первая</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                {% endif %}
+                <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Последняя&raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        <table class="table table-striped" id="dtBasicExample">
+            <thead style="background: lightskyblue; text-align: center; vertical-align: middle;">
+                <tr>
+                  <th scope="col">Длинная ссылка</th>
+                  <th scope="col">Короткая ссылка</th>
+                  <th scope="col">Кол-во переходов</th>
+                  <th scope="col">Время создания</th>
+                  <th scope="col">Последнее посещение</th>
+                  <th scope="col">Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for url in object_list %}
+                        <tr>
+                        <td style="word-break: break-all; vertical-align: middle;"><a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:100 }} </a></td>
+                        <td style="vertical-align: middle;">
+                            <a href="{% url 'redirect_on_site' url.short_url %}" target="_blank" id="copylink">
+                                {{ request.get_host }}/{{ url.short_url }}
+                            </a>
+                        </td>
+                        <td style="font-size: 26px; text-align: center; vertical-align: middle;">{{ url.clicks }}</td>
+                        <td style="text-align: center; vertical-align: middle;">{{ url.time_create }}</td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            {% if url.time_last_click %}
+                                {{ url.time_last_click }}
+                            {% else %}
+                                Переходов нет
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center; vertical-align: middle;">
+                            <script>
+                                function Confirm(pk) {
+                                    document.getElementById("confirm"+pk).style.display = "";
+                                }
+                            </script>
+                            <form action="{% url 'delete_url' pk=url.pk %}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-default btn-danger" type="button" value="Delete" onclick="Confirm({{ url.pk }})"/>
+                                <input class="btn btn-outline-success mt-1" type="submit" id="confirm{{ url.pk }}" style="display:none;" value="Удалить???"/>
+                            </form>
+                        </td>
+                        </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}
