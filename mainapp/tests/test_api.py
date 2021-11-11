@@ -72,22 +72,23 @@ class UrlsAPITest(APITestCase):
         response = self.client.get(self.one_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_list_urls_retrieve(self):
-        response = self.client.get(self.list_url)
-        urls = Urls.objects.all()
-        serializer = UrlsSerializer(urls, many=True)
-        self.assertEqual(response.data, serializer.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
     def test_add_url(self):
         valid_url = "http://example.com/new"
         invalid_url = "example.com/new"
         response = self.client.post(self.list_url, {"long_url": valid_url})
-        serializer = UrlsSerializer(response.data)
-        self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.post(self.list_url, {"long_url": invalid_url})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_list_urls_retrieve(self):
+        valid_url = "http://example.com/new"
+        for _ in range(0, 5):
+            self.client.post(self.list_url, {"long_url": valid_url})
+        response = self.client.get(self.list_url)
+        urls = Urls.objects.filter(owner=User.objects.get(username='test_name').pk).order_by('-pk')
+        serializer = UrlsSerializer(urls, many=True)
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_url_detail_retrieve(self):
         response = self.client.get(self.one_url)
@@ -99,22 +100,24 @@ class UrlsAPITest(APITestCase):
           "long_url": "http://example.com/1",
           "short_url": Urls.objects.get(pk=1).short_url,
           "clicks": 666,
-          "time_create": Urls.objects.get(pk=1).time_create
+          "time_create": Urls.objects.get(pk=1).time_create,
+          "time_last_clicks": "",
+          "owner": Urls.objects.get(pk=1).owner
         }
         serializer = UrlsSerializer(data)
         response = self.client.put(self.one_url, data)
-        self.assertEqual(response.data, serializer.data)
+        self.assertNotEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Urls.objects.get(pk=1).clicks, 666)
+        self.assertNotEqual(Urls.objects.get(pk=1).clicks, 666)
 
-    def test_patch_clicks_url(self):
-        response = self.client.patch(self.one_url, {"clicks": 111})
+    def test_patch_long_url(self):
+        response = self.client.patch(self.one_url, {"long_url": "http://example.com/test_patch_url"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Urls.objects.get(pk=1).clicks, 111)
+        self.assertEqual(Urls.objects.get(pk=1).long_url, "http://example.com/test_patch_url")
 
     def test_immutability_short_link(self):
         response = self.client.patch(self.one_url, {"short_url": "AbCdE"})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(Urls.objects.get(pk=1).short_url, "AbCdE")
 
     def test_delete_url(self):
