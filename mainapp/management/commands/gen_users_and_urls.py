@@ -62,7 +62,8 @@ class Command(BaseCommand):
                 )
             self.stdout.write(self.style.MIGRATE_HEADING('All done'))
 
-        if options['urls']:
+        if options['urls'] and not options['total']:
+            # Create anonymous users
             for i in range(urls_count):
                 url = Urls(
                     long_url=f"http://example.com/{get_random_string()}",
