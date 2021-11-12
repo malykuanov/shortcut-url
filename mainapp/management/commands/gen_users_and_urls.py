@@ -94,11 +94,14 @@ class Command(BaseCommand):
             )
 
         if options['admin']:
-            username = get_random_string()
+            if User.objects.filter(username=settings.ADMIN_DEFAULT_NAME):
+                username = get_random_string()
+            else:
+                username = settings.ADMIN_DEFAULT_NAME
             User.objects.create_superuser(
                 username=username,
                 email='',
-                password=settings.DEFAULT_PASSWORD
+                password=settings.ADMIN_DEFAULT_PASSWORD
             )
             self.stdout.write(
                 self.style.NOTICE('The administrator has been created!')
