@@ -53,8 +53,11 @@ class ShortUrl(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        short_url = self.request.session.get('short_url')[-1]
-        context['url'] = Urls.objects.filter(short_url=short_url).first()
+        short_url = self.request.session.get('short_url', None)
+        if short_url:
+            context['url'] = Urls.objects.get(short_url=short_url[-1])
+        else:
+            context['url'] = None
         return context
 
 
