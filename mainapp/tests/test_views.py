@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import Client, TestCase
 from django.urls import resolve, reverse
 
@@ -12,6 +14,11 @@ class UrlsViewsTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
+        cls.User = get_user_model()
+        cls.credentials = {
+            'username': 'testuser',
+            'password': 'secret'
+        }
 
     def test_home_page(self):
         url = reverse("home")
@@ -72,3 +79,44 @@ class UrlsViewsTest(TestCase):
                                            args=[url.short_url]))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, url.long_url)
+
+    def test_dashboard_redirect_anon_and_auth_user(self):
+        response = self.client.get(reverse("dashboard"))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/sign-in/?next=/dashboard/")
+        self.User.objects.create_user(**self.credentials)
+        self.client.post('/sign-in/', self.credentials, follow=True)
+        response = self.client.get(reverse("dashboard"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_url_page(self):
+        url = Urls(long_url="example.com/deleteme")
+        url.save()
+        self.assertTrue(Urls.objects.get(pk=1).long_url, "example.com/deleteme")
+        response = self.client.post(reverse("delete_url", args=[url.pk]))
+        self.assertEqual(response.status_code, 302)
+        with self.assertRaises(ObjectDoesNotExist):
+            Urls.objects.get(pk=1)
+
+    def test_signin_page(self):
+        self.User.objects.create_user(**self.credentials)
+        response = self.client.post('/sign-in/', self.credentials, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['user'].is_active)
+        self.assertRedirects(response, reverse("home"))
+
+    def test_signup_page(self):
+        response = self.client.post(reverse('sign-up'), data={
+            'username': "testuser",
+            'email': "test@gmail.com",
+            'password1': "somesupersecretpassword",
+            'password2': "somesupersecretpassword"
+        })
+        self.assertEqual(response.status_code, 302)
+
+    def test_logout_view(self):
+        self.User.objects.create_user(**self.credentials)
+        self.client.post('/sign-in/', self.credentials, follow=True)
+        response = self.client.get(reverse("logout"))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse("home"))
