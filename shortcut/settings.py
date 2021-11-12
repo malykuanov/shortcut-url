@@ -118,7 +118,10 @@ STATICFILES_DIRS = []
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ADMIN_DEFAULT_NAME = env('ADMIN_DEFAULT_NAME')
+ADMIN_DEFAULT_PASSWORD = env('ADMIN_DEFAULT_PASSWORD')
 ADMIN_MAIL = env('ADMIN_MAIL')
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = env('ADMIN_MAIL')
