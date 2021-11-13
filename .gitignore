@@ -146,3 +146,6 @@ cython_debug/
 
 #entrypoint for docker
 /entrypoint.sh
+
+#static folder (manage.py collecstatic)
+/static
