@@ -10,7 +10,7 @@ services:
       - ./.env
     volumes:
       - ./docker/postgres/init.sql:/docker-entrypoint-init.db/init.sql
-      - ./docker/postgres/postgres-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
@@ -24,3 +24,6 @@ services:
       - "8000:8000"
     depends_on:
       - postgresdb
+
+volumes:
+  pgdata:
