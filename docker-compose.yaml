@@ -25,5 +25,18 @@ services:
     depends_on:
       - postgresdb
 
+  nginx:
+    build:
+      context:
+        ./docker/nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - web
+      - postgresdb
+    ports:
+      - "80:80"
+    volumes:
+      - ./static:/static
+
 volumes:
   pgdata:
