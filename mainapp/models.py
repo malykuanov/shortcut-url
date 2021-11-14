@@ -1,7 +1,10 @@
+from hashids import Hashids
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from hashids import Hashids
+from django.template.defaultfilters import truncatechars
+
 
 User = get_user_model()
 
@@ -29,6 +32,10 @@ class Urls(models.Model):
 
     class Meta:
         verbose_name_plural = "Urls"
+
+    @property
+    def long_url_truncate(self):
+        return truncatechars(self.long_url, 50)
 
     def save(self, *args, **kwargs):
         super(Urls, self).save(*args, **kwargs)
