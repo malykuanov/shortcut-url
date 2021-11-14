@@ -11,7 +11,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 HASHID_FIELD_SALT = env('HASHID_FIELD_SALT')
 
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(" ")
 
