@@ -19,16 +19,34 @@ def get_default_user():
 
 
 class Urls(models.Model):
-    long_url = models.URLField(max_length=2000)
-    short_url = models.CharField(max_length=5, blank=True)
-    clicks = models.PositiveIntegerField(default=0)
+    long_url = models.URLField(
+        max_length=2000,
+        verbose_name='Длинная ссылка'
+    )
+    short_url = models.CharField(
+        max_length=5,
+        blank=True,
+        verbose_name='Короткая ссылка'
+    )
+    clicks = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Кол-во переходов'
+    )
     owner = models.ForeignKey(
         User,
         on_delete=models.SET_DEFAULT,
-        default=get_default_user
+        default=get_default_user,
+        verbose_name='Пользователь'
     )
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_last_click = models.DateTimeField(null=True, blank=True)
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания'
+    )
+    time_last_click = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Время послед. перехода'
+    )
 
     class Meta:
         verbose_name_plural = "Urls"
