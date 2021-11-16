@@ -60,10 +60,15 @@ class ContactForm(forms.Form):
 
     def send_email(self):
         send_mail(
-            self.cleaned_data['subject'],
-            self.cleaned_data['message'],
-            self.cleaned_data['email'],
-            [settings.ADMIN_MAIL]
+            subject=self.cleaned_data['subject'],
+            message=(
+                'From= '
+                + self.cleaned_data['email']
+                + ' Message='
+                + self.cleaned_data['message']
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.ADMIN_MAIL]
         )
 
 
