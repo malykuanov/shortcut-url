@@ -35,6 +35,7 @@ services:
       - postgresdb
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./static:/static
       - ./docker/nginx/certs:/etc/ssl/certs
