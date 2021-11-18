@@ -21,5 +21,5 @@ def send_email_for_new_user(sender, instance, **kwargs):
             message=template,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[instance.email],
-            html_message = template,
+            html_message=template,
         )
