@@ -19,6 +19,7 @@ class UrlsSerializer(serializers.ModelSerializer):
 
 class CreateUrlSerializer(serializers.ModelSerializer):
     """Serializer for POST method"""
+    owner = serializers.CharField(source="owner.username", read_only=True)
 
     class Meta:
         model = Urls
