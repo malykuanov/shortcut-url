@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework import permissions
 from rest_framework.authentication import (BasicAuthentication,
                                            TokenAuthentication)
@@ -42,7 +42,10 @@ class UrlDetailView(APIView):
 
     def get_object(self, short_url):
         try:
-            return Urls.objects.get(short_url=short_url)
+            url = Urls.objects.get(short_url=short_url)
+            if url.owner != self.request.user:
+                raise Http404
+            return url
         except Urls.DoesNotExist:
             raise Http404
 
