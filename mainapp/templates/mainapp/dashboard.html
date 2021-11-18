@@ -33,7 +33,7 @@
             <tbody>
                     {% for url in object_list %}
                         <tr>
-                        <td class="col-5" style="word-break: break-all; vertical-align: middle;"><a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:100 }} </a></td>
+                        <td class="col-4" style="word-break: break-all; vertical-align: middle;"><a href="{{ url.long_url }}" target="_blank">{{ url.long_url|truncatechars:100 }} </a></td>
                         <td class="col-2" style="vertical-align: middle; text-align: center">
                             <a href="{% url 'redirect_on_site' url.short_url %}" target="_blank" id="copylink">
                                 {{ request.get_host }}/{{ url.short_url }}
