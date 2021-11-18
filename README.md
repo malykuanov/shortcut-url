@@ -34,9 +34,10 @@ docker-compose.yaml  Config files interpreted by the Docker engine
 requirements         “Requirements files” are files containing a 
                      list of items to be installed using "pip install -r requirements.txt"
 ```
-###API example:
 
-**With basic auth**
+### API example:
+
+**<ins>With basic auth</ins>**
 
 **GET**
 ```
@@ -68,7 +69,7 @@ curl -u mikle:password -X POST -H "Content-Type: application/json" -d '{"long_ur
   "owner": "mikle"
 }
 ```
-**djoser token auth**
+**<ins>djoser token auth</ins>**
 ```
 curl -X POST https://url-cut.ru/api-auth/users/ --data 'username=djosername&password=strongpass'
 ```
