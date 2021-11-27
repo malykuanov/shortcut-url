@@ -117,7 +117,7 @@ where the key is:
 
 ##### User`s Dashboard
 
-![dashboard](https://i.ibb.co/QrnJmg8/shortcut-dashboard.png)
+![dashboard](https://i.ibb.co/1KbSpGp/shortcut-dashboard.png)
 
 ##### Example API (GET all urls)
 
